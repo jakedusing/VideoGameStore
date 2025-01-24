@@ -1,16 +1,21 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class VideoGameService {
+    private final Connection connection;
+
+    public VideoGameService(Connection connection) {
+        this.connection = connection;
+    }
 
     public void addVideoGame(VideoGame videoGame) {
         // SQL query to insert the video game
         String query = "INSERT INTO games (title, genre, platform, price, stock, release_date, developer, publisher) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DatabaseConfig.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             // set parameters based on the VideoGame object
             preparedStatement.setString(1, videoGame.getTitle());
@@ -28,6 +33,26 @@ public class VideoGameService {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public int getGameId(String title, String platform) {
+        String query = "SELECT game_id FROM games WHERE title = ? AND platform = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, platform);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("game_id");
+                } else {
+                    System.out.println("No game found with the given title and platform");
+                    return -1; // return -1 if no game is found
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // return -1 if an error occurs
         }
     }
 }

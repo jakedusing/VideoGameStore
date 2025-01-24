@@ -1,8 +1,14 @@
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EmployeeService {
+    private final Connection connection;
+
+    public EmployeeService(Connection connection) {
+        this.connection = connection;
+    }
 
     public void addEmployee(Employee employee) {
 
@@ -10,8 +16,7 @@ public class EmployeeService {
         String query = "INSERT INTO employee (first_name, last_name, email, phone_number, hire_date, salary) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection connection = DatabaseConfig.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             // set parameters based on Employee object
             preparedStatement.setString(1, employee.getFirstName());
@@ -28,6 +33,25 @@ public class EmployeeService {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public int getEmployeeId(String email) {
+        String query = "SELECT employee_id FROM employee WHERE email = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("employee_id");
+                } else {
+                    System.out.println("No employee found with the given email");
+                    return -1;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 }

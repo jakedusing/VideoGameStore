@@ -1,19 +1,27 @@
+import java.sql.Connection;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        Employee newEmployee = new Employee("Joe", "Dirt", "joedirt@gmail.com",
+        Connection connection = DatabaseConfig.getConnection();
+        EmployeeService employeeService = new EmployeeService(connection);
+
+        String email = "joedirt@gmail.com";
+        int employeeId = employeeService.getEmployeeId(email);
+
+        if (employeeId != -1) {
+            System.out.println("Employee ID for " + email + ": " + employeeId);
+        } else {
+            System.out.println("Employee not found.");
+        }
+
+
+        /*Employee newEmployee = new Employee("Joe", "Dirt", "joedirt@gmail.com",
                 "312-777-8888", "2022-05-15", 21.00);
 
         EmployeeService employeeService = new EmployeeService();
-        employeeService.addEmployee(newEmployee);
-
-       /* VideoGame newGame = new VideoGame("Animal Crossing: New Horizons", "Simulation",
-                "Nintendo Switch", 49.99, 6, "2020-03-20", "Nintendo", "Nintendo");
-
-        // Create a VideoGameService instance to add the game
-        VideoGameService videoGameService = new VideoGameService();
-        videoGameService.addVideoGame(newGame);*/
+        employeeService.addEmployee(newEmployee);*/
 
        /* try (Connection connection = DatabaseConfig.getConnection()) {
             System.out.println("Connected to the database from Main!");
