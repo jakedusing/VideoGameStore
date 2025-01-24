@@ -2,7 +2,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class Main {
 
@@ -12,11 +11,25 @@ public class Main {
 
         try (connection) {
 
+
             VideoGameService videoGameService = new VideoGameService(connection);
             EmployeeService employeeService = new EmployeeService(connection);
             SaleService saleService = new SaleService(connection);
+            CustomerService customerService = new CustomerService(connection);
 
-            Scanner scanner = new Scanner(System.in);
+            Customer newCustomer = new Customer("Taylor", "Swift", "tswift@gmail.com", "111-234-5678");
+            customerService.addCustomer(newCustomer);
+
+            /*Employee newEmployee = new Employee("Joe", "Dirt", "joedirt@gmail.com",
+                "312-777-8888", "2022-05-15", 21.00);
+
+            EmployeeService employeeService = new EmployeeService();
+            employeeService.addEmployee(newEmployee);*/
+
+
+
+
+            /*Scanner scanner = new Scanner(System.in);
 
             System.out.println("Enter employee email:");
             String employeeEmail = scanner.nextLine();
@@ -56,17 +69,10 @@ public class Main {
             Sale sale = new Sale(gameId, employeeId, quantity, totalPrice);
             saleService.addSale(sale);
 
-            System.out.println("Sale completed successfully!");
+            System.out.println("Sale completed successfully!");*/
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-        /*Employee newEmployee = new Employee("Joe", "Dirt", "joedirt@gmail.com",
-                "312-777-8888", "2022-05-15", 21.00);
-
-        EmployeeService employeeService = new EmployeeService();
-        employeeService.addEmployee(newEmployee);*/
 
        /* try (Connection connection = DatabaseConfig.getConnection()) {
             System.out.println("Connected to the database from Main!");
