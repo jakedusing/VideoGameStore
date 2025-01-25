@@ -1,7 +1,6 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VideoGameService {
     private final Connection connection;
@@ -53,6 +52,56 @@ public class VideoGameService {
         } catch (SQLException e) {
             e.printStackTrace();
             return -1; // return -1 if an error occurs
+        }
+    }
+
+    public List<VideoGame> getAllGames() throws SQLException {
+        List<VideoGame> games = new ArrayList<>();
+        String query = "SELECT * from games";
+        try (Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                games.add(new VideoGame(
+                        resultSet.getInt("game_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("genre"),
+                        resultSet.getString("platform"),
+                        resultSet.getDouble("price"),
+                        resultSet.getInt("stock"),
+                        resultSet.getString("release_date"),
+                        resultSet.getString("developer"),
+                        resultSet.getString("publisher"),
+                        resultSet.getTimestamp("created_at")
+                ));
+            }
+        }
+        return games;
+    }
+
+    public List<VideoGame> getGamesPerPlatform(String platform) throws SQLException {
+        List<VideoGame> games = new ArrayList<>();
+        String query = "SELECT * FROM games WHERE platform = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, platform);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    games.add(new VideoGame(
+                            resultSet.getInt("game_id"),
+                            resultSet.getString("title"),
+                            resultSet.getString("genre"),
+                            resultSet.getString("platform"),
+                            resultSet.getDouble("price"),
+                            resultSet.getInt("stock"),
+                            resultSet.getString("release_date"),
+                            resultSet.getString("developer"),
+                            resultSet.getString("publisher"),
+                            resultSet.getTimestamp("created_at")
+
+                    ));
+                }
+            }
+            return games;
         }
     }
 }

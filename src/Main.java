@@ -17,8 +17,27 @@ public class Main {
             SaleService saleService = new SaleService(connection);
             CustomerService customerService = new CustomerService(connection);
 
-            Customer newCustomer = new Customer("Taylor", "Swift", "tswift@gmail.com", "111-234-5678");
-            customerService.addCustomer(newCustomer);
+            /*List<Customer> customers = new ArrayList<>(List.of(
+                    new Customer("Chris", "Evans", "chrisevans@marvel.com", "555-123-4567"),
+                    new Customer("Emma", "Stone", "emmastone@hollywood.com", "555-234-5678"),
+                    new Customer("LeBron", "James", "lebronjames@nba.com", "555-345-7890"),
+                    new Customer("Zendaya", "Coleman", "zendaya@hollywood.com", "555-567-8901"),
+                    new Customer("Ryan", "Reynolds", "ryanreynolds@deadpool.com", "555-678-9012"),
+                    new Customer("Simone", "Biles", "simonebiles@gymnastics.com", "555-789-0123"),
+                    new Customer("Tom", "Holland", "tomholland@spiderman.com", "555-890-1234"),
+                    new Customer("Adele", "Laurie", "adelelaurie@music.com", "555-901-2345"),
+                    new Customer("Serena", "Williams", "serenawilliams@tennis.com", "555-012-3456"),
+                    new Customer("Olivia", "Rodrigo", "oliviar@music.com", "555-831-3389")));
+
+            for (Customer customer : customers) {
+                customerService.addCustomer(customer);
+            }*/
+
+            // customerService.getAllCustomers().forEach(System.out::println);
+            // videoGameService.getAllGames().forEach(System.out::println);
+
+            /*Customer newCustomer = new Customer("Taylor", "Swift", "tswift@gmail.com", "111-234-5678");
+            customerService.addCustomer(newCustomer);*/
 
             /*Employee newEmployee = new Employee("Joe", "Dirt", "joedirt@gmail.com",
                 "312-777-8888", "2022-05-15", 21.00);

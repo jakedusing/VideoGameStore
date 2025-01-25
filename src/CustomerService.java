@@ -1,6 +1,6 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerService {
 
@@ -30,5 +30,43 @@ public class CustomerService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Customer getCustomerById(int customerId) throws SQLException {
+        String query = "SELECT * FROM customer WHERE customer_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, customerId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new Customer(
+                        resultSet.getInt("customer_id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phone_number"),
+                        resultSet.getTimestamp("created_at")
+                );
+            }
+        }
+        return null;
+    }
+
+    public List<Customer> getAllCustomers() throws SQLException {
+        List<Customer> customers = new ArrayList<>();
+        String query = "SELECT * FROM customer";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                customers.add(new Customer(
+                        resultSet.getInt("customer_id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phone_number"),
+                        resultSet.getTimestamp("created_at")
+                ));
+            }
+        }
+        return customers;
     }
 }
