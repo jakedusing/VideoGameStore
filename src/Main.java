@@ -17,6 +17,25 @@ public class Main {
             SaleService saleService = new SaleService(connection);
             CustomerService customerService = new CustomerService(connection);
 
+            saleService.getSalesByEmployee(1).forEach(System.out::println);
+
+            /*List<VideoGame> games = new ArrayList<>(List.of(
+                    new VideoGame("Final Fantasy XVI", "RPG", "PS5", 69.99, 12,
+                            "2022-09-09", "Square Enix", "Square Enix"),
+                    new VideoGame("Red Dead Redemption 2", "Action-Adventure", "Xbox One", 39.99, 14,
+                            "2018-10-26", "Rockstar Games", "Rockstar Games"),
+                    new VideoGame("Resident Evil Village", "Action-Adventure", "PS5", 59.99, 9,
+                            "2021-05-05", "Capcom", "Capcom"),
+                    new VideoGame("Mortal Kombat 11", "Fighting", "Xbox Series X", 49.99, 6,
+                            "2019-04-23", "NetherRealm Studios", "Warner Bros. Interactive Entertainment"),
+                    new VideoGame("Hollow Knight", "Action-Adventure", "PS4", 14.99, 20,
+                            "2017-02-24", "Team Cherry", "Team Cherry")
+            ));
+
+            for (VideoGame game : games) {
+                videoGameService.addVideoGame(game);
+            }*/
+
             /*List<Customer> customers = new ArrayList<>(List.of(
                     new Customer("Chris", "Evans", "chrisevans@marvel.com", "555-123-4567"),
                     new Customer("Emma", "Stone", "emmastone@hollywood.com", "555-234-5678"),

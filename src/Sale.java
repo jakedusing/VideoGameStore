@@ -27,4 +27,14 @@ public class Sale {
     public double getTotalPrice() {
         return totalPrice;
     }
+
+    @Override
+    public String toString() {
+        return "Sale{" +
+                "gameId=" + gameId +
+                ", employeeId=" + employeeId +
+                ", quantity=" + quantity +
+                ", totalPrice=" + totalPrice +
+                '}';
+    }
 }
