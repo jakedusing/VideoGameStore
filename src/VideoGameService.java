@@ -104,4 +104,39 @@ public class VideoGameService {
             return games;
         }
     }
+
+    public int getGameStock(int gameId) throws SQLException {
+        String query = "SELECT stock from games WHERE game_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, gameId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("stock");
+                }
+            }
+        }
+        return 0;
+    }
+
+    public double getGamePrice(int gameId) throws SQLException {
+        String query = "SELECT price FROM games WHERE game_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, gameId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getDouble("price");
+                }
+            }
+        }
+        return 0.0;
+    }
+
+    public void updateGameStock(int gameId, int newStock) throws SQLException {
+        String query = "UPDATE games SET stock = ? WHERE game_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, newStock);
+            preparedStatement.setInt(2, gameId);
+            preparedStatement.executeUpdate();
+        }
+    }
 }

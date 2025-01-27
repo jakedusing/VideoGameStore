@@ -1,7 +1,6 @@
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Main {
 
@@ -18,6 +17,7 @@ public class Main {
             CustomerService customerService = new CustomerService(connection);
 
             saleService.getSalesByEmployee(1).forEach(System.out::println);
+
 
             /*List<VideoGame> games = new ArrayList<>(List.of(
                     new VideoGame("Final Fantasy XVI", "RPG", "PS5", 69.99, 12,
@@ -67,7 +67,7 @@ public class Main {
 
 
 
-            /*Scanner scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
 
             System.out.println("Enter employee email:");
             String employeeEmail = scanner.nextLine();
@@ -91,8 +91,8 @@ public class Main {
             System.out.println("Enter quantity to purchase");
             int quantity = scanner.nextInt();
 
-            int stock = getGameStock(connection, gameId);
-            double price = getGamePrice(connection, gameId);
+            int stock = videoGameService.getGameStock(gameId);
+            double price = videoGameService.getGamePrice(gameId);
 
             if (stock < quantity) {
                 System.out.println("Not enough stock available. Exiting");
@@ -101,13 +101,13 @@ public class Main {
 
             double totalPrice = price * quantity;
 
-            updateGameStock(connection, gameId, stock - quantity);
+            videoGameService.updateGameStock(gameId, stock - quantity);
 
             // Create a Sale object and add to the database
             Sale sale = new Sale(gameId, employeeId, quantity, totalPrice);
             saleService.addSale(sale);
 
-            System.out.println("Sale completed successfully!");*/
+            System.out.println("Sale completed successfully!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,40 +127,5 @@ public class Main {
             System.err.println("Failed to connect to the database.");
             e.printStackTrace();
         }*/
-    }
-
-    private static int getGameStock(Connection connection, int gameId) throws SQLException {
-        String query = "SELECT stock from games WHERE game_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, gameId);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getInt("stock");
-                }
-            }
-        }
-        return 0;
-    }
-
-    private static double getGamePrice(Connection connection, int gameId) throws SQLException {
-        String query = "SELECT price FROM games WHERE game_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, gameId);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getDouble("price");
-                }
-            }
-        }
-        return 0.0;
-    }
-
-    private static void updateGameStock(Connection connection, int gameId, int newStock) throws SQLException {
-        String query = "UPDATE games SET stock = ? WHERE game_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, newStock);
-            preparedStatement.setInt(2, gameId);
-            preparedStatement.executeUpdate();
-        }
     }
 }
