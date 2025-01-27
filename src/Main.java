@@ -20,8 +20,17 @@ public class Main {
 
             /*List<String> topGames = saleService.getTopSellingGames(1);
             topGames.forEach(System.out::println);*/
+            List<Employee> employees = employeeService.getAllEmployees();
+            employees.forEach(System.out::println);
 
-            List<Customer> customers = customerService.getAllCustomers();
+            employeeService.updateEmployee(1, "Bob", "Seger",
+                    null, null, null);
+
+            List<Employee> employees1 = employeeService.getAllEmployees();
+            employees.forEach(System.out::println);
+            employees1.forEach(System.out::println);
+
+            /*List<Customer> customers = customerService.getAllCustomers();
             customers.forEach(System.out::println);
 
             boolean updated = customerService.updateCustomerInfo(
@@ -39,7 +48,7 @@ public class Main {
 
             System.out.println(customers.get(0));
             List<Customer> customers1 = customerService.getAllCustomers();
-            System.out.println(customers1.get(0));
+            System.out.println(customers1.get(0));*/
 
             /*List<VideoGame> games = new ArrayList<>(List.of(
                     new VideoGame("Final Fantasy XVI", "RPG", "PS5", 69.99, 12,

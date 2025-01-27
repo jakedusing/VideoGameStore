@@ -1,14 +1,28 @@
 public class Employee {
 
+    private int employeeId;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
     private String hireDate;
     private double salary;
+    private java.sql.Timestamp createdAt;
 
+    public Employee(int employeeId, String firstName, String lastName, String email,
+                    String phoneNumber, String hireDate, double salary, java.sql.Timestamp createdAt) {
 
-    public Employee (String firstName, String lastName, String email,
+        this.employeeId = employeeId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.hireDate = hireDate;
+        this.salary = salary;
+        this.createdAt = createdAt;
+    }
+
+    public Employee(String firstName, String lastName, String email,
                      String phoneNumber, String hireDate, double salary) {
 
         this.firstName = firstName;
@@ -41,5 +55,19 @@ public class Employee {
 
     public double getSalary() {
         return salary;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employeeID=" + employeeId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", hireDate='" + hireDate + '\'' +
+                ", salary=$'" + salary + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
