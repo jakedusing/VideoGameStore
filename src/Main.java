@@ -1,6 +1,6 @@
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Scanner;
+import java.util.List;
 
 public class Main {
 
@@ -18,6 +18,28 @@ public class Main {
 
             saleService.getSalesByEmployee(1).forEach(System.out::println);
 
+            /*List<String> topGames = saleService.getTopSellingGames(1);
+            topGames.forEach(System.out::println);*/
+
+            List<Customer> customers = customerService.getAllCustomers();
+            customers.forEach(System.out::println);
+
+            boolean updated = customerService.updateCustomerInfo(
+                    1,
+                    null,
+                    null,
+                    "tayswift13@gmail.com",
+                    null
+            );
+            if (updated) {
+                System.out.println("Customer info updated successfully!");
+            } else {
+                System.out.println("No updates were made, check the customer ID");
+            }
+
+            System.out.println(customers.get(0));
+            List<Customer> customers1 = customerService.getAllCustomers();
+            System.out.println(customers1.get(0));
 
             /*List<VideoGame> games = new ArrayList<>(List.of(
                     new VideoGame("Final Fantasy XVI", "RPG", "PS5", 69.99, 12,
@@ -67,7 +89,7 @@ public class Main {
 
 
 
-            Scanner scanner = new Scanner(System.in);
+            /*Scanner scanner = new Scanner(System.in);
 
             System.out.println("Enter employee email:");
             String employeeEmail = scanner.nextLine();
@@ -107,7 +129,7 @@ public class Main {
             Sale sale = new Sale(gameId, employeeId, quantity, totalPrice);
             saleService.addSale(sale);
 
-            System.out.println("Sale completed successfully!");
+            System.out.println("Sale completed successfully!");*/
         } catch (SQLException e) {
             e.printStackTrace();
         }

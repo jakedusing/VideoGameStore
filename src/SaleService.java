@@ -55,4 +55,33 @@ public class SaleService {
         }
         return sales;
     }
+
+    public List<String> getTopSellingGames(int limit) throws SQLException {
+        List<String> topSellingGames = new ArrayList<>();
+        String query = """
+                SELECT games.game_id, games.title, SUM(sales.quantity) AS total_sold
+                FROM sales
+                JOIN games ON sales.game_id = games.game_id
+                GROUP BY games.game_id, games.title
+                ORDER BY total_sold DESC
+                LIMIT ?
+                """;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, limit);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String gameInfo = String.format(
+                            "Game ID: %d, Title: %s, Total Sold: %d",
+                            resultSet.getInt("game_id"),
+                            resultSet.getString("title"),
+                            resultSet.getInt("total_sold")
+                    );
+                    topSellingGames.add(gameInfo);
+                }
+            }
+        }
+        return topSellingGames;
+    }
 }

@@ -69,4 +69,27 @@ public class CustomerService {
         }
         return customers;
     }
+
+    public boolean updateCustomerInfo(int customerId, String firstName, String lastName,
+                                      String email, String phone) throws SQLException {
+
+        // COALESCE ensure that only non-null fields are updated
+        String query = "UPDATE customer SET " +
+                "first_name = COALESCE(?, first_name), " +
+                "last_name = COALESCE(?, last_name), " +
+                "email = COALESCE(?, email), " +
+                "phone_number = COALESCE(?, phone_number) " +
+                "WHERE customer_id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, email);
+            preparedStatement.setString(4, phone);
+            preparedStatement.setInt(5, customerId);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            return rowsUpdated > 0; // Return true if at least one row was updated
+        }
+    }
 }
