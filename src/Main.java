@@ -16,11 +16,14 @@ public class Main {
             SaleService saleService = new SaleService(connection);
             CustomerService customerService = new CustomerService(connection);
 
-            saleService.getSalesByEmployee(1).forEach(System.out::println);
+            /*Sale sale = new Sale(7, 1, 8, 2);   // gameid, employeeid, quantity, customerid
+            saleService.addSale(sale, videoGameService);*/
 
-            /*List<String> topGames = saleService.getTopSellingGames(1);
-            topGames.forEach(System.out::println);*/
-            List<Employee> employees = employeeService.getAllEmployees();
+            List<Sale> sales = saleService.getSalesByCustomer(2);
+            sales.forEach(System.out::println);
+            List<String> topGames = saleService.getTopSellingGames(3);
+            topGames.forEach(System.out::println);
+            /*List<Employee> employees = employeeService.getAllEmployees();
             employees.forEach(System.out::println);
 
             employeeService.updateEmployee(1, "Bob", "Seger",
@@ -28,7 +31,7 @@ public class Main {
 
             List<Employee> employees1 = employeeService.getAllEmployees();
             employees.forEach(System.out::println);
-            employees1.forEach(System.out::println);
+            employees1.forEach(System.out::println);*/
 
             /*List<Customer> customers = customerService.getAllCustomers();
             customers.forEach(System.out::println);

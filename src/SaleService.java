@@ -12,27 +12,74 @@ public class SaleService {
         this.connection = connection;
     }
 
-    public void addSale(Sale sale) {
+    public void addSale(Sale sale, VideoGameService videoGameService) {
+        try {
+            // Check available stock
+            int currentStock = videoGameService.getGameStock(sale.getGameId());
 
-        // SQL query to insert the sale into the sales table
-        String query = "INSERT INTO sales (game_id, employee_id, quantity, total_price) " +
-                "VALUES (?, ?, ?, ?)";
+            if (currentStock < sale.getQuantity()) {
+                System.out.println("Not enough stock available for this game.");
+                return; // exit the function if not enough stock
+            }
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            // Retrieve the price of the game
+            double price = videoGameService.getGamePrice(sale.getGameId());
+            if (price <= 0) {
+                System.out.println("Error: Could not retrieve game price.");
+                return;
+            }
 
-            // set parameters based on Sale object
-            preparedStatement.setInt(1, sale.getGameId());
-            preparedStatement.setInt(2, sale.getEmployeeId());
-            preparedStatement.setInt(3, sale.getQuantity());
-            preparedStatement.setDouble(4, sale.getTotalPrice());
+            // calculate total price
+            double totalPrice = price * sale.getQuantity();
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                System.out.println("Successfully added new sale!");
+            // SQL query to insert the sale into the sales table
+            String query = "INSERT INTO sales (game_id, employee_id, quantity, total_price, customer_id) " +
+                    "VALUES (?, ?, ?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+                // set parameters based on Sale object
+                preparedStatement.setInt(1, sale.getGameId());
+                preparedStatement.setInt(2, sale.getEmployeeId());
+                preparedStatement.setInt(3, sale.getQuantity());
+                preparedStatement.setDouble(4, totalPrice);
+                preparedStatement.setInt(5, sale.getCustomerId());
+
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Successfully added new sale!");
+
+                    // deduct the sold quantity from stock
+                    int newStock = currentStock - sale.getQuantity();
+                    videoGameService.updateGameStock(sale.getGameId(), newStock);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Sale> getSalesByCustomer(int customerId) throws SQLException{
+        List<Sale> sales = new ArrayList<>();
+        String query = "SELECT * FROM sales WHERE customer_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, customerId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while(resultSet.next()) {
+                    sales.add(new Sale(
+                            resultSet.getInt("sale_id"),
+                            resultSet.getInt("game_id"),
+                            resultSet.getInt("employee_id"),
+                            resultSet.getInt("quantity"),
+                            resultSet.getDouble("total_price"),
+                            resultSet.getTimestamp("sale_date"),
+                            resultSet.getInt("customer_id")
+                    ));
+                }
+            }
+        }
+        return sales;
     }
 
     public List<Sale> getSalesByEmployee(int employeeId) throws SQLException {
@@ -47,7 +94,8 @@ public class SaleService {
                             resultSet.getInt("game_id"),
                             resultSet.getInt("employee_id"),
                             resultSet.getInt("quantity"),
-                            resultSet.getDouble("total_price")
+                            resultSet.getDouble("total_price"),
+                            resultSet.getInt("customer_id")
                     ));
 
                 }
