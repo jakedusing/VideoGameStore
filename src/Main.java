@@ -1,6 +1,4 @@
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 
 public class Main {
 
@@ -8,21 +6,25 @@ public class Main {
 
         Connection connection = DatabaseConfig.getConnection();
 
-        try (connection) {
+        javax.swing.SwingUtilities.invokeLater(() -> new GameStoreGUI(connection));
+
+        /*try (connection) {
 
 
             VideoGameService videoGameService = new VideoGameService(connection);
             EmployeeService employeeService = new EmployeeService(connection);
             SaleService saleService = new SaleService(connection);
             CustomerService customerService = new CustomerService(connection);
+            */
+
 
             /*Sale sale = new Sale(7, 1, 8, 2);   // gameid, employeeid, quantity, customerid
             saleService.addSale(sale, videoGameService);*/
 
-            List<Sale> sales = saleService.getSalesByCustomer(2);
+            /*List<Sale> sales = saleService.getSalesByCustomer(2);
             sales.forEach(System.out::println);
             List<String> topGames = saleService.getTopSellingGames(3);
-            topGames.forEach(System.out::println);
+            topGames.forEach(System.out::println);*/
             /*List<Employee> employees = employeeService.getAllEmployees();
             employees.forEach(System.out::println);
 
@@ -142,9 +144,9 @@ public class Main {
             saleService.addSale(sale);
 
             System.out.println("Sale completed successfully!");*/
-        } catch (SQLException e) {
+      /*  } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
        /* try (Connection connection = DatabaseConfig.getConnection()) {
             System.out.println("Connected to the database from Main!");

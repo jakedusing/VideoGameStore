@@ -35,6 +35,10 @@ public class Sale {
         this.customerId = customerId;
     }
 
+    public int getSaleId() {
+        return saleId;
+    }
+
     public int getGameId() {
         return gameId;
     }
@@ -49,6 +53,10 @@ public class Sale {
 
     public double getTotalPrice() {
         return totalPrice;
+    }
+
+    public java.sql.Timestamp getSaleDate() {
+        return saleDate;
     }
 
     public int getCustomerId() {

@@ -39,6 +39,10 @@ public class VideoGame {
         this.publisher = publisher;
     }
 
+    public int getGameId() {
+        return gameId;
+    }
+
     public String getTitle() {
         return title;
     }

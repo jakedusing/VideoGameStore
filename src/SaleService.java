@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +54,26 @@ public class SaleService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Sale> getAllSales() throws SQLException {
+        List<Sale> sales = new ArrayList<>();
+        String query = "SELECT * from sales";
+        try (Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(query)) {
+            while (resultSet.next()) {
+                sales.add(new Sale(
+                        resultSet.getInt("sale_id"),
+                        resultSet.getInt("game_id"),
+                        resultSet.getInt("employee_id"),
+                        resultSet.getInt("quantity"),
+                        resultSet.getDouble("total_price"),
+                        resultSet.getTimestamp("sale_date"),
+                        resultSet.getInt("customer_id")
+                ));
+            }
+        }
+        return sales;
     }
 
     public List<Sale> getSalesByCustomer(int customerId) throws SQLException{
