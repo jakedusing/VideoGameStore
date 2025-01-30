@@ -35,6 +35,24 @@ public class VideoGameService {
         }
     }
 
+    public int getGameId(String title) {
+        String query = "SELECT game_id FROM games WHERE title = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, title);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("game_id");
+                } else {
+                    System.out.println("No game found with that title");
+                    return -1;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
     public int getGameId(String title, String platform) {
         String query = "SELECT game_id FROM games WHERE title = ? AND platform = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -122,6 +140,19 @@ public class VideoGameService {
         String query = "SELECT price FROM games WHERE game_id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, gameId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getDouble("price");
+                }
+            }
+        }
+        return 0.0;
+    }
+
+    public double getGamePrice(String gameTitle) throws SQLException {
+        String query = "SELECT price FROM games WHERE title = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, gameTitle);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return resultSet.getDouble("price");

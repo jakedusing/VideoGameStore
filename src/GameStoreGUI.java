@@ -7,9 +7,11 @@ import java.sql.SQLException;
 
 public class GameStoreGUI  extends JFrame  {
     private final VideoGameService videoGameService;
+    private final SaleService saleService;
 
     public GameStoreGUI(Connection connection) {
         this.videoGameService = new VideoGameService(connection);
+        this.saleService = new SaleService(connection);
 
         setTitle("Game Store Manager");
         setSize(600, 400);
@@ -41,6 +43,10 @@ public class GameStoreGUI  extends JFrame  {
             }
         });
 
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.add("Sales Management", new SalesManagementPanel(videoGameService, saleService));
+
+        add(tabbedPane, BorderLayout.CENTER);
         add(loadGamesButton, BorderLayout.SOUTH);
         setVisible(true);
     }

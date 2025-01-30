@@ -8,13 +8,15 @@ public class SalesManagementPanel extends JPanel {
     private JTable salesTable;
     private DefaultTableModel tableModel;
     private JComboBox<String> gameDropdown;
+    private JComboBox<Integer> employeeDropdown;
+    private JComboBox<Integer> customerDropdown;
     private JTextField quantityField, priceField;
     private JButton addSaleButton;
-    private VideoGameService videGameService;
+    private VideoGameService videoGameService;
     private SaleService saleService;
 
     public SalesManagementPanel(VideoGameService videoGameService, SaleService saleService) {
-        this.videGameService = videoGameService;
+        this.videoGameService = videoGameService;
         this.saleService = saleService;
 
         setLayout(new BorderLayout());
@@ -25,6 +27,32 @@ public class SalesManagementPanel extends JPanel {
         salesTable = new JTable(tableModel);
         loadSalesData();
         add(new JScrollPane(salesTable), BorderLayout.CENTER);
+
+        // form Panel
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridLayout(4, 2));
+
+        formPanel.add(new JLabel("Game:"));
+        gameDropdown = new JComboBox<>();
+        loadGames();
+        formPanel.add(gameDropdown);
+
+        formPanel.add(new JLabel("Quantity:"));
+        quantityField = new JTextField();
+        formPanel.add(quantityField);
+
+        formPanel.add(new JLabel("Price:"));
+        priceField = new JTextField();
+        priceField.setEditable(false);
+        formPanel.add(priceField);
+
+        addSaleButton = new JButton("Add Sale");
+        formPanel.add(addSaleButton);
+        add(formPanel, BorderLayout.SOUTH);
+
+        //Event Listeners
+        gameDropdown.addActionListener(e -> updatePriceField());
+        addSaleButton.addActionListener(e -> addSale());
     }
 
     private void loadSalesData() {
@@ -37,5 +65,65 @@ public class SalesManagementPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Error loading sales: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+    }
+
+    private void loadGames() {
+        try {
+            List<VideoGame> games = videoGameService.getAllGames();
+            for (VideoGame game : games) {
+                gameDropdown.addItem(game.getTitle());
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading games: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    private void updatePriceField() {
+        try {
+            String selectedGame = (String) gameDropdown.getSelectedItem();
+            if (selectedGame != null) {
+                double price = videoGameService.getGamePrice(selectedGame);
+                priceField.setText(String.valueOf(price));
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error updating price field: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    private void addSale() {
+        String selectedGame = (String) gameDropdown.getSelectedItem();
+        int quantity;
+
+        try {
+            quantity = Integer.parseInt(quantityField.getText());
+            if (quantity < 0) {
+                JOptionPane.showMessageDialog(this, "Quantity must be greater than zero.");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid quantity");
+            return;
+        }
+
+        int employeeId = (int) employeeDropdown.getSelectedItem();
+        int customerId = (int) customerDropdown.getSelectedItem();
+        try {
+            int gameId = videoGameService.getGameId(selectedGame);
+            double price = videoGameService.getGamePrice(selectedGame);
+            double totalPrice = price * quantity;
+            if (videoGameService.getGameStock(gameId) < quantity) {
+                JOptionPane.showMessageDialog(this, "Not enough stock available.");
+                return;
+            }
+            Sale sale = new Sale(gameId, employeeId, quantity, customerId);
+            saleService.addSale(sale, videoGameService);
+            videoGameService.updateGameStock(gameId, -quantity);
+        } catch (SQLException e) {
+
+        }
+
+
     }
 }
