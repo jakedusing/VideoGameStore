@@ -8,16 +8,21 @@ public class SalesManagementPanel extends JPanel {
     private JTable salesTable;
     private DefaultTableModel tableModel;
     private JComboBox<String> gameDropdown;
-    private JComboBox<Integer> employeeDropdown;
-    private JComboBox<Integer> customerDropdown;
+    private JComboBox<String> employeeDropdown;
+    private JComboBox<String> customerDropdown;
     private JTextField quantityField, priceField;
     private JButton addSaleButton;
     private VideoGameService videoGameService;
     private SaleService saleService;
+    private CustomerService customerService;
+    private EmployeeService employeeService;
 
-    public SalesManagementPanel(VideoGameService videoGameService, SaleService saleService) {
+    public SalesManagementPanel(VideoGameService videoGameService, SaleService saleService,
+                                CustomerService customerService, EmployeeService employeeService) {
         this.videoGameService = videoGameService;
         this.saleService = saleService;
+        this.customerService = customerService;
+        this.employeeService = employeeService;
 
         setLayout(new BorderLayout());
 
@@ -30,7 +35,17 @@ public class SalesManagementPanel extends JPanel {
 
         // form Panel
         JPanel formPanel = new JPanel();
-        formPanel.setLayout(new GridLayout(4, 2));
+        formPanel.setLayout(new GridLayout(6, 2));
+
+        formPanel.add(new JLabel("Employee:"));
+        employeeDropdown = new JComboBox<>();
+        loadEmployees();
+        formPanel.add(employeeDropdown);
+
+        formPanel.add(new JLabel("Customer:"));
+        customerDropdown = new JComboBox<>();
+        loadCustomers();
+        formPanel.add(customerDropdown);
 
         formPanel.add(new JLabel("Game:"));
         gameDropdown = new JComboBox<>();
@@ -79,6 +94,30 @@ public class SalesManagementPanel extends JPanel {
         }
     }
 
+    private void loadCustomers() {
+        try {
+            List<Customer> customers = customerService.getAllCustomers();
+            for (Customer customer : customers) {
+                customerDropdown.addItem(customer.getEmail());
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading customers: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    private void loadEmployees() {
+        try {
+            List<Employee> employees = employeeService.getAllEmployees();
+            for (Employee employee : employees) {
+                employeeDropdown.addItem(employee.getEmail());
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error loading employees: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
     private void updatePriceField() {
         try {
             String selectedGame = (String) gameDropdown.getSelectedItem();
@@ -107,10 +146,12 @@ public class SalesManagementPanel extends JPanel {
             return;
         }
 
-        int employeeId = (int) employeeDropdown.getSelectedItem();
-        int customerId = (int) customerDropdown.getSelectedItem();
+      //  int employeeId;
+      //  int customerId = (int) customerDropdown.getSelectedItem();
         try {
             int gameId = videoGameService.getGameId(selectedGame);
+            int employeeId = employeeService.getEmployeeId((String) employeeDropdown.getSelectedItem());
+            int customerId = customerService.getCustomerId((String) customerDropdown.getSelectedItem());
             double price = videoGameService.getGamePrice(selectedGame);
             double totalPrice = price * quantity;
             if (videoGameService.getGameStock(gameId) < quantity) {

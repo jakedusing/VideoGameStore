@@ -1,17 +1,18 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.List;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class GameStoreGUI  extends JFrame  {
     private final VideoGameService videoGameService;
     private final SaleService saleService;
+    private final CustomerService customerService;
+    private final EmployeeService employeeService;
 
     public GameStoreGUI(Connection connection) {
         this.videoGameService = new VideoGameService(connection);
         this.saleService = new SaleService(connection);
+        this.customerService = new CustomerService(connection);
+        this.employeeService = new EmployeeService(connection);
 
         setTitle("Game Store Manager");
         setSize(600, 400);
@@ -19,7 +20,7 @@ public class GameStoreGUI  extends JFrame  {
         setLayout(new BorderLayout());
 
         // Table to display games
-        String[] columnNames = {"ID", "Title", "Genre", "Platform", "Price", "Stock"};
+        /*String[] columnNames = {"ID", "Title", "Genre", "Platform", "Price", "Stock"};
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
         JTable gameTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(gameTable);
@@ -41,13 +42,13 @@ public class GameStoreGUI  extends JFrame  {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error loading games");
             }
-        });
+        });*/
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add("Sales Management", new SalesManagementPanel(videoGameService, saleService));
+        tabbedPane.add("Sales Management", new SalesManagementPanel(videoGameService, saleService, customerService, employeeService));
 
         add(tabbedPane, BorderLayout.CENTER);
-        add(loadGamesButton, BorderLayout.SOUTH);
+        //add(loadGamesButton, BorderLayout.SOUTH);
         setVisible(true);
     }
 }

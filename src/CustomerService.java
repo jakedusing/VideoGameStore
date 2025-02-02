@@ -51,6 +51,26 @@ public class CustomerService {
         return null;
     }
 
+    public int getCustomerId(String email) {
+        String query = "SELECT customer_id FROM customer WHERE email = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("customer_id");
+                } else {
+                    System.out.println("No customer found with the given id");
+                    return -1;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+    }
+    }
+
     public List<Customer> getAllCustomers() throws SQLException {
         List<Customer> customers = new ArrayList<>();
         String query = "SELECT * FROM customer";
