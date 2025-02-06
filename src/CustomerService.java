@@ -51,6 +51,25 @@ public class CustomerService {
         return null;
     }
 
+    public Customer getCustomerByPhoneNumber(String phoneNumber) throws SQLException {
+        String query = "SELECT * FROM customer WHERE phone_number = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, phoneNumber);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return new Customer(
+                        resultSet.getInt("customer_id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("phone_number"),
+                        resultSet.getTimestamp("created_at")
+                );
+            }
+        }
+        return null;
+    }
+
     public int getCustomerId(String email) {
         String query = "SELECT customer_id FROM customer WHERE email = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

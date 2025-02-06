@@ -1,21 +1,56 @@
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
         Connection connection = DatabaseConfig.getConnection();
+        Scanner scanner = new Scanner(System.in);
 
-        javax.swing.SwingUtilities.invokeLater(() -> new GameStoreGUI(connection));
+        //javax.swing.SwingUtilities.invokeLater(() -> new GameStoreGUI(connection));
 
-        /*try (connection) {
+        try (connection) {
 
 
             VideoGameService videoGameService = new VideoGameService(connection);
             EmployeeService employeeService = new EmployeeService(connection);
             SaleService saleService = new SaleService(connection);
             CustomerService customerService = new CustomerService(connection);
-            */
+
+           // List<Sale> sales = new ArrayList<>();
+           // sales.add(new Sale(13, 1, 3, 1));
+           // sales.add(new Sale(20, 1, 5, 1));
+           // Order order = new Order(sales, 1);
+
+            //saleService.addSale(order, videoGameService);
+
+            System.out.print("Enter customer's email:");
+            String email = scanner.nextLine();
+
+            int customerId = customerService.getCustomerId(email);
+
+            if (customerId == -1) {
+                System.out.println("No customer found with that email.");
+            } else {
+                List<Sale> sales = saleService.getSalesByCustomer(customerId);
+
+                if (sales.isEmpty()) {
+                    System.out.println("No sales found for this customer.");
+                } else {
+                    System.out.println("Sales for customer with email " + email + ":");
+                    for (Sale sale : sales) {
+                        System.out.println("Sale ID: " + sale.getSaleId() + ", Date: " + sale.getSaleDate() +
+                                ", Amount: " + sale.getTotalPrice() + ", Game bought: " + videoGameService.getGameTitle(sale.getGameId()));
+                    }
+                }
+            }
+
+
+            //System.out.println(customerService.getCustomerByPhoneNumber("111-234-5678"));
+
 
 
             /*Sale sale = new Sale(7, 1, 8, 2);   // gameid, employeeid, quantity, customerid
@@ -144,9 +179,9 @@ public class Main {
             saleService.addSale(sale);
 
             System.out.println("Sale completed successfully!");*/
-      /*  } catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
 
        /* try (Connection connection = DatabaseConfig.getConnection()) {
             System.out.println("Connected to the database from Main!");

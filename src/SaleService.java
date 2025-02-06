@@ -9,46 +9,47 @@ public class SaleService {
         this.connection = connection;
     }
 
-    public void addSale(Sale sale, VideoGameService videoGameService) {
+    public void addSale(Order order, VideoGameService videoGameService) {
         try {
-            // Check available stock
-            int currentStock = videoGameService.getGameStock(sale.getGameId());
+            // Iterate over each sale in the order
+            for (Sale sale : order.getSales()) {
+                // Check available stock for each game
+                int currentStock = videoGameService.getGameStock(sale.getGameId());
 
-            if (currentStock < sale.getQuantity()) {
-                System.out.println("Not enough stock available for this game.");
-                return; // exit the function if not enough stock
-            }
+                if (currentStock < sale.getQuantity()) {
+                    System.out.println("Not enough stock available for this game.");
+                    return; // exit the function if not enough stock
+                }
 
-            // Retrieve the price of the game
-            double price = videoGameService.getGamePrice(sale.getGameId());
-            if (price <= 0) {
-                System.out.println("Error: Could not retrieve game price.");
-                return;
-            }
+                // Retrieve the price of the game
+                double price = videoGameService.getGamePrice(sale.getGameId());
+                if (price <= 0) {
+                    System.out.println("Error: Could not retrieve game price.");
+                    return;
+                }
 
-            // calculate total price
-            double totalPrice = price * sale.getQuantity();
+                // calculate total price
+                double totalPrice = price * sale.getQuantity();
 
-            // SQL query to insert the sale into the sales table
-            String query = "INSERT INTO sales (game_id, employee_id, quantity, total_price, customer_id) " +
-                    "VALUES (?, ?, ?, ?, ?)";
+                // SQL query to insert the sale into the sales table
+                String query = "INSERT INTO sales (game_id, employee_id, quantity, total_price, customer_id) " +
+                        "VALUES (?, ?, ?, ?, ?)";
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setInt(1, sale.getGameId());
+                    preparedStatement.setInt(2, sale.getEmployeeId());
+                    preparedStatement.setInt(3, sale.getQuantity());
+                    preparedStatement.setDouble(4, totalPrice);
+                    preparedStatement.setInt(5, sale.getCustomerId());
 
-                // set parameters based on Sale object
-                preparedStatement.setInt(1, sale.getGameId());
-                preparedStatement.setInt(2, sale.getEmployeeId());
-                preparedStatement.setInt(3, sale.getQuantity());
-                preparedStatement.setDouble(4, totalPrice);
-                preparedStatement.setInt(5, sale.getCustomerId());
+                    int rowsAffected = preparedStatement.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("Successfully added new sale!");
 
-                int rowsAffected = preparedStatement.executeUpdate();
-                if (rowsAffected > 0) {
-                    System.out.println("Successfully added new sale!");
-
-                    // deduct the sold quantity from stock
-                    int newStock = currentStock - sale.getQuantity();
-                    videoGameService.updateGameStock(sale.getGameId(), newStock);
+                        // deduct the sold quantity from stock
+                        int newStock = currentStock - sale.getQuantity();
+                        videoGameService.updateGameStock(sale.getGameId(), newStock);
+                    }
                 }
             }
         } catch (SQLException e) {

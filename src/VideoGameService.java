@@ -53,6 +53,24 @@ public class VideoGameService {
         }
     }
 
+    public String getGameTitle(int gameId) {
+        String query = "SELECT title FROM games WHERE game_id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, gameId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getString("title");
+                } else {
+                    System.out.println("No game found with that ID");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public int getGameId(String title, String platform) {
         String query = "SELECT game_id FROM games WHERE title = ? AND platform = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {

@@ -27,11 +27,11 @@ public class SalesManagementPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // Table setup
-        String[] columnNames = {"Sale ID", "Game", "Quantity", "Total Price", "Date"};
+        /*String[] columnNames = {"Sale ID", "Game", "Quantity", "Total Price", "Date"};
         tableModel = new DefaultTableModel(columnNames, 0);
         salesTable = new JTable(tableModel);
         loadSalesData();
-        add(new JScrollPane(salesTable), BorderLayout.CENTER);
+        add(new JScrollPane(salesTable), BorderLayout.CENTER); */
 
         // form Panel
         JPanel formPanel = new JPanel();
@@ -159,7 +159,7 @@ public class SalesManagementPanel extends JPanel {
                 return;
             }
             Sale sale = new Sale(gameId, employeeId, quantity, customerId);
-            saleService.addSale(sale, videoGameService);
+            //saleService.addSale(sale, videoGameService);
             videoGameService.updateGameStock(gameId, -quantity);
         } catch (SQLException e) {
 
