@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,14 +21,18 @@ public class Main {
             SaleService saleService = new SaleService(connection);
             CustomerService customerService = new CustomerService(connection);
 
-           // List<Sale> sales = new ArrayList<>();
+            List<Sale> sales = new ArrayList<>();
+            sales.add(new Sale(3, 1, 1, 2));
+            sales.add(new Sale(12, 1, 1, 2));
+            Order order = new Order(sales, 2);
+            saleService.addSale(order, videoGameService);
            // sales.add(new Sale(13, 1, 3, 1));
            // sales.add(new Sale(20, 1, 5, 1));
            // Order order = new Order(sales, 1);
 
             //saleService.addSale(order, videoGameService);
 
-            System.out.print("Enter customer's email:");
+            /*System.out.print("Enter customer's email:");
             String email = scanner.nextLine();
 
             int customerId = customerService.getCustomerId(email);
@@ -46,7 +51,7 @@ public class Main {
                                 ", Amount: " + sale.getTotalPrice() + ", Game bought: " + videoGameService.getGameTitle(sale.getGameId()));
                     }
                 }
-            }
+            }*/
 
 
             //System.out.println(customerService.getCustomerByPhoneNumber("111-234-5678"));

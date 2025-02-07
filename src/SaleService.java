@@ -30,6 +30,7 @@ public class SaleService {
 
                 // calculate total price
                 double totalPrice = price * sale.getQuantity();
+                order.addToOrderTotal(totalPrice);
 
                 // SQL query to insert the sale into the sales table
                 String query = "INSERT INTO sales (game_id, employee_id, quantity, total_price, customer_id) " +
@@ -52,6 +53,8 @@ public class SaleService {
                     }
                 }
             }
+
+            System.out.println("Total order cost: $" + order.getOrderTotal());
         } catch (SQLException e) {
             e.printStackTrace();
         }
