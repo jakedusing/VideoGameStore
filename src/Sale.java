@@ -1,9 +1,11 @@
 public class Sale {
 
     private int saleId;
+    private int orderId;
     private int gameId;
     private int employeeId;
     private int quantity;
+    private double price;
     private double totalPrice;
     private java.sql.Timestamp saleDate;
     private int customerId;
@@ -39,6 +41,10 @@ public class Sale {
         return saleId;
     }
 
+    public int getOrderId() {
+        return orderId;
+    }
+
     public int getGameId() {
         return gameId;
     }
@@ -49,6 +55,10 @@ public class Sale {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     public double getTotalPrice() {
