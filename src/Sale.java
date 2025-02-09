@@ -37,6 +37,14 @@ public class Sale {
         this.customerId = customerId;
     }
 
+    public Sale(int orderId, int saleId, int gameId, int quantity, double price) {
+        this.orderId = orderId;
+        this.saleId = saleId;
+        this.gameId = gameId;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public int getSaleId() {
         return saleId;
     }

@@ -9,7 +9,84 @@ public class SaleService {
         this.connection = connection;
     }
 
-    public void addSale(Order order, VideoGameService videoGameService) {
+    public void addSale(Order order, VideoGameService videoGameService) throws SQLException {
+        try {
+            // first calulate total cost of the order
+            for (Sale sale : order.getSales()) {
+                int currentStock = videoGameService.getGameStock(sale.getGameId());
+
+                if (currentStock < sale.getQuantity()) {
+                    System.out.println("Not enough stock available for this game");
+                    return; // exit if not enough stock
+                }
+
+                double price = videoGameService.getGamePrice(sale.getGameId());
+                if (price <= 0) {
+                    System.out.println("Error: Could not retrieve game price");
+                    return;
+                }
+
+                double totalPrice = price * sale.getQuantity();
+                order.addToOrderTotal(totalPrice);
+            }
+                // Insert the order into the database
+                String orderQuery = "INSERT INTO orders (customer_id, employee_id, total_price) VALUES (?, ?, ?)";
+                int orderId = -1;
+
+                try (PreparedStatement orderStatement = connection.prepareStatement(orderQuery, Statement.RETURN_GENERATED_KEYS)) {
+                    orderStatement.setInt(1, order.getCustomerId());
+                    orderStatement.setInt(2, order.getEmployeeId());
+                    orderStatement.setDouble(3, order.getOrderTotal());
+                    int orderRows = orderStatement.executeUpdate();
+
+                    if (orderRows > 0) {
+                        try (ResultSet generatedKeys = orderStatement.getGeneratedKeys()) {
+                            if (generatedKeys.next()) {
+                                orderId = generatedKeys.getInt(1);
+                            }
+                        }
+                    }
+                }
+
+                if (orderId == -1) {
+                    System.out.println("Failed to insert order");
+                    return;
+                }
+
+                // Insert each sale that was in the order
+                for (Sale sale : order.getSales()) {
+                    double price = videoGameService.getGamePrice(sale.getGameId());
+                    double totalPrice = price * sale.getQuantity();
+
+                    String saleQuery = "INSERT INTO sales (sale_id, order_id, game_id, quantity, price) " +
+                            "VALUES (?, ?, ?, ?, ?)";
+
+                    try (PreparedStatement saleStatement = connection.prepareStatement(saleQuery)) {
+                        saleStatement.setInt(1, sale.getSaleId());
+                        saleStatement.setInt(2, orderId);
+                        saleStatement.setInt(3, sale.getGameId());
+                        saleStatement.setInt(4, sale.getQuantity());
+                        saleStatement.setDouble(5, totalPrice);
+
+                        int saleRows = saleStatement.executeUpdate();
+                        if (saleRows > 0) {
+                            System.out.println("Successfully added new sale!");
+
+                            // Deduct stock
+                            int currentStock = videoGameService.getGameStock(sale.getGameId());
+                            int newStock = currentStock - sale.getQuantity();
+                            videoGameService.updateGameStock(sale.getGameId(), newStock);
+                        }
+                    }
+                }
+
+            System.out.println("Total order cost: $" + order.getOrderTotal());
+            } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*public void addSale(Order order, VideoGameService videoGameService) {
         try {
             // Iterate over each sale in the order
             for (Sale sale : order.getSales()) {
@@ -58,7 +135,7 @@ public class SaleService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    } */
 
     public List<Sale> getAllSales() throws SQLException {
         List<Sale> sales = new ArrayList<>();

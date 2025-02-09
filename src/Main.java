@@ -22,9 +22,9 @@ public class Main {
             CustomerService customerService = new CustomerService(connection);
 
             List<Sale> sales = new ArrayList<>();
-            sales.add(new Sale(3, 1, 1, 2));
-            sales.add(new Sale(12, 1, 1, 2));
-            Order order = new Order(sales, 2);
+            sales.add(new Sale(3, 1, 1, 1));
+            sales.add(new Sale(12, 1, 1, 1));
+            Order order = new Order(sales, 1, 1);
             saleService.addSale(order, videoGameService);
            // sales.add(new Sale(13, 1, 3, 1));
            // sales.add(new Sale(20, 1, 5, 1));
