@@ -3,11 +3,13 @@ public class Sale {
     private int saleId;
     private int orderId;
     private int gameId;
+    private String gameName;
     private int employeeId;
     private int quantity;
     private double price;
     private double totalPrice;
     private java.sql.Timestamp saleDate;
+    private java.sql.Timestamp orderDate;
     private int customerId;
 
     public Sale(int saleId, int gameId, int employeeId, int quantity,
@@ -20,6 +22,15 @@ public class Sale {
         this.totalPrice = totalPrice;
         this.saleDate = saleDate;
         this.customerId = customerId;
+    }
+
+    public Sale(int orderId, java.sql.Timestamp orderDate, int gameId, String gameName, int quantity, double price) {
+        this.orderId = orderId;
+        this.orderDate = orderDate;
+        this.gameId = gameId;
+        this.gameName = gameName;
+        this.quantity = quantity;
+        this.price = price;
     }
 
     public Sale(int gameId, int employeeId, int quantity, int customerId) {
@@ -84,10 +95,15 @@ public class Sale {
     @Override
     public String toString() {
         return "Sale{" +
-                "gameId=" + gameId +
+                "saleId=" + saleId +
+                ", orderId=" + orderId +   // Include orderId
+                ", gameId=" + gameId +
+                ", gameName='" + gameName + '\'' + // Optional if fetched via JOIN
                 ", employeeId=" + employeeId +
                 ", quantity=" + quantity +
-                ", totalPrice=" + totalPrice +
+                ", price=" + price +
+                ", orderDate=" + orderDate +  // Include saleDate
+                ", customerId=" + customerId +
                 '}';
     }
 }

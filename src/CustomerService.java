@@ -131,4 +131,33 @@ public class CustomerService {
             return rowsUpdated > 0; // Return true if at least one row was updated
         }
     }
+
+    public List<Sale> getCustomerPurchaseHistory(int customerId) {
+        List<Sale> purchaseHistory = new ArrayList<>();
+        String query = "SELECT o.order_id, o.order_date, s.game_id, g.title, s.quantity, s.price " +
+                "FROM orders o " +
+                "JOIN sales s ON o.order_id = s.order_id " +
+                "JOIN games g ON s.game_id = g.game_id " +
+                "WHERE o.customer_id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, customerId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int orderId = resultSet.getInt("order_id");
+                Timestamp orderDate = resultSet.getTimestamp("order_date");
+                int gameId = resultSet.getInt("game_id");
+                String gameName = resultSet.getString("title");
+                int quantity = resultSet.getInt("quantity");
+                double price = resultSet.getDouble("price");
+
+                Sale sale = new Sale(orderId, orderDate, gameId, gameName, quantity, price);
+                purchaseHistory.add(sale);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return purchaseHistory;
+    }
 }
