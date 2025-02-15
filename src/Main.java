@@ -1,6 +1,5 @@
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -20,10 +19,12 @@ public class Main {
             SaleService saleService = new SaleService(connection);
             CustomerService customerService = new CustomerService(connection);
 
-            List<Sale> history = customerService.getCustomerPurchaseHistory(1);
+            employeeService.getEmployeeSalesReport();
+
+            /*List<Sale> history = customerService.getCustomerPurchaseHistory(1);
             for (Sale sale : history) {
                 System.out.println(sale);
-            }
+            }*/
 
             /*List<Sale> sales = new ArrayList<>();
             sales.add(new Sale(3, 1, 1, 1));

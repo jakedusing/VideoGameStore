@@ -111,4 +111,43 @@ public class EmployeeService {
             }
         }
     }
+    public void getEmployeeSalesReport() {
+        String query = """
+                SELECT e.employee_id, e.first_name, COUNT(s.sale_id) AS total_sales,
+                    SUM(s.price * s.quantity) AS total_revenue
+                FROM employee e
+                JOIN orders o ON e.employee_id = o.employee_id
+                JOIN sales s ON o.order_id = s.order_id
+                GROUP BY e.employee_id;
+                """;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            System.out.println("Employee Sales Report:");
+            System.out.println("-------------------------------------");
+
+            // %-10s -> Left-aligns a string in a field of width 10 (for Emp ID)
+            // %-20s -> Left-aligns a string in a field of width 20 (for Name)
+            // %-15s -> Left-aligns a string in a field of width 15 (for Total Sales)
+            // %-15s -> Left-aligns a string in a field of width 15 (for Total Revenue)
+            System.out.printf("%-10s %-20s %-15s %-15s%n", "Emp ID", "Name", "Total Sales", "Total Revenue");
+            System.out.println("-------------------------------------");
+
+            while (resultSet.next()) {
+                int employeeId = resultSet.getInt("employee_id");
+                String name = resultSet.getString("first_name");
+                int totalSales = resultSet.getInt("total_sales");
+                double totalRevenue = resultSet.getDouble("total_revenue");
+
+                // %-10d -> Left-aligns an integer in a field of width 10 (for Emp ID)
+                // %-20s -> Left-aligns a string in a field of width 20 (for Name)
+                // %-15d -> Left-aligns an integer in a field of width 15 (for Total Sales)
+                // %-14.2f -> Left-aligns a floating point number in a field of width 14, with 2 decimal places (for Total Revenue)
+                System.out.printf("%-10d %-20s %-15d $%-14.2f%n", employeeId, name, totalSales, totalRevenue);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
