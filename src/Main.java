@@ -19,7 +19,10 @@ public class Main {
             SaleService saleService = new SaleService(connection);
             CustomerService customerService = new CustomerService(connection);
 
-            employeeService.getEmployeeSalesReport();
+            saleService.getDailySalesSummary();
+            saleService.getMonthlySalesSummary();
+
+            //employeeService.getEmployeeSalesReport();
 
             /*List<Sale> history = customerService.getCustomerPurchaseHistory(1);
             for (Sale sale : history) {

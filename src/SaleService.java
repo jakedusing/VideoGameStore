@@ -86,57 +86,6 @@ public class SaleService {
         }
     }
 
-    /*public void addSale(Order order, VideoGameService videoGameService) {
-        try {
-            // Iterate over each sale in the order
-            for (Sale sale : order.getSales()) {
-                // Check available stock for each game
-                int currentStock = videoGameService.getGameStock(sale.getGameId());
-
-                if (currentStock < sale.getQuantity()) {
-                    System.out.println("Not enough stock available for this game.");
-                    return; // exit the function if not enough stock
-                }
-
-                // Retrieve the price of the game
-                double price = videoGameService.getGamePrice(sale.getGameId());
-                if (price <= 0) {
-                    System.out.println("Error: Could not retrieve game price.");
-                    return;
-                }
-
-                // calculate total price
-                double totalPrice = price * sale.getQuantity();
-                order.addToOrderTotal(totalPrice);
-
-                // SQL query to insert the sale into the sales table
-                String query = "INSERT INTO sales (game_id, employee_id, quantity, total_price, customer_id) " +
-                        "VALUES (?, ?, ?, ?, ?)";
-
-                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                    preparedStatement.setInt(1, sale.getGameId());
-                    preparedStatement.setInt(2, sale.getEmployeeId());
-                    preparedStatement.setInt(3, sale.getQuantity());
-                    preparedStatement.setDouble(4, totalPrice);
-                    preparedStatement.setInt(5, sale.getCustomerId());
-
-                    int rowsAffected = preparedStatement.executeUpdate();
-                    if (rowsAffected > 0) {
-                        System.out.println("Successfully added new sale!");
-
-                        // deduct the sold quantity from stock
-                        int newStock = currentStock - sale.getQuantity();
-                        videoGameService.updateGameStock(sale.getGameId(), newStock);
-                    }
-                }
-            }
-
-            System.out.println("Total order cost: $" + order.getOrderTotal());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    } */
-
     public List<Sale> getAllSales() throws SQLException {
         List<Sale> sales = new ArrayList<>();
         String query = "SELECT * from sales";
@@ -229,5 +178,51 @@ public class SaleService {
             }
         }
         return topSellingGames;
+    }
+
+    public void getDailySalesSummary() {
+        String query = "SELECT DATE(order_date) AS sale_date, COUNT(*) AS total_sales, SUM(total_price) AS total_revenue " +
+                "FROM orders " +
+                "GROUP BY DATE(order_date) " +
+                "ORDER BY sale_date DESC";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            System.out.println("Daily Sales Summary:");
+            while (resultSet.next()) {
+                String saleDate = resultSet.getString("sale_date");
+                int totalSales = resultSet.getInt("total_sales");
+                double totalRevenue = resultSet.getDouble("total_revenue");
+
+                System.out.println("Date: " + saleDate + " | Total Sales: " + totalSales + " | Revenue: $" + totalRevenue);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getMonthlySalesSummary() {
+        String query = "SELECT DATE_FORMAT(order_date, '%Y-%m') AS sale_month, COUNT(*) AS total_sales, SUM(total_price) AS total_revenue " +
+                "FROM orders " +
+                "GROUP BY sale_month " +
+                "ORDER BY sale_month DESC";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            System.out.println("Monthly Sales Summary");
+            while (resultSet.next()) {
+                String saleMonth = resultSet.getString("sale_month");
+                int totalSales = resultSet.getInt("total_sales");
+                double totalRevenue = resultSet.getDouble("total_revenue");
+
+                System.out.println("Month: " + saleMonth + " | Total Sales: " + totalSales + " | Revenue: $" + totalRevenue);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
