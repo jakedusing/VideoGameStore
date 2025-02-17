@@ -24,7 +24,7 @@ public class Main {
             saleService.getMonthlySalesSummary();
             List<String> games = saleService.getTopSellingGames(5);
             games.forEach(System.out::println);
-
+            System.out.println("-------------------------------");
             List<String> leastSellingGames = saleService.getLeastSellingGames(10);
             leastSellingGames.forEach(System.out::println);
 

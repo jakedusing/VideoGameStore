@@ -183,10 +183,10 @@ public class SaleService {
     public List<String> getLeastSellingGames(int limit) throws SQLException {
         List<String> leastSellingGames = new ArrayList<>();
         String query = """
-                SELECT games.game_id, games.title, COALESCE(SUM(sales.quantity), 0) AS total_sold
+                SELECT games.game_id, games.title, games.price, COALESCE(SUM(sales.quantity), 0) AS total_sold
                 FROM games
                 LEFT JOIN sales ON games.game_id = sales.game_id
-                GROUP BY games.game_id, games.title
+                GROUP BY games.game_id, games.title, games.price
                 ORDER BY total_sold ASC
                 LIMIT ?
                 """;
@@ -197,9 +197,10 @@ public class SaleService {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     String gameInfo = String.format(
-                            "Game ID: %d, Title: %s, Total Sold: %d",
+                            "Game ID: %d, Title: %s, Price: $%.2f Total Sold: %d",
                             resultSet.getInt("game_id"),
                             resultSet.getString("title"),
+                            resultSet.getDouble("price"),
                             resultSet.getInt("total_sold")
                     );
                     leastSellingGames.add(gameInfo);
