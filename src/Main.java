@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -21,6 +22,11 @@ public class Main {
 
             saleService.getDailySalesSummary();
             saleService.getMonthlySalesSummary();
+            List<String> games = saleService.getTopSellingGames(5);
+            games.forEach(System.out::println);
+
+            List<String> leastSellingGames = saleService.getLeastSellingGames(10);
+            leastSellingGames.forEach(System.out::println);
 
             //employeeService.getEmployeeSalesReport();
 

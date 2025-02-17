@@ -180,6 +180,35 @@ public class SaleService {
         return topSellingGames;
     }
 
+    public List<String> getLeastSellingGames(int limit) throws SQLException {
+        List<String> leastSellingGames = new ArrayList<>();
+        String query = """
+                SELECT games.game_id, games.title, COALESCE(SUM(sales.quantity), 0) AS total_sold
+                FROM games
+                LEFT JOIN sales ON games.game_id = sales.game_id
+                GROUP BY games.game_id, games.title
+                ORDER BY total_sold ASC
+                LIMIT ?
+                """;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, limit);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String gameInfo = String.format(
+                            "Game ID: %d, Title: %s, Total Sold: %d",
+                            resultSet.getInt("game_id"),
+                            resultSet.getString("title"),
+                            resultSet.getInt("total_sold")
+                    );
+                    leastSellingGames.add(gameInfo);
+                }
+            }
+        }
+        return leastSellingGames;
+    }
+
     public void getDailySalesSummary() {
         String query = "SELECT DATE(order_date) AS sale_date, COUNT(*) AS total_sales, SUM(total_price) AS total_revenue " +
                 "FROM orders " +
