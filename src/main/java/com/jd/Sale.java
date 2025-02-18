@@ -1,3 +1,5 @@
+package com.jd;
+
 public class Sale {
 
     private int saleId;
@@ -94,7 +96,7 @@ public class Sale {
 
     @Override
     public String toString() {
-        return "Sale{" +
+        return "com.jd.Sale{" +
                 "saleId=" + saleId +
                 ", orderId=" + orderId +   // Include orderId
                 ", gameId=" + gameId +

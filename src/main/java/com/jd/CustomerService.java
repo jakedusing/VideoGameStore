@@ -1,3 +1,5 @@
+package com.jd;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class CustomerService {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            // set parameters based on Customer object
+            // set parameters based on com.jd.Customer object
             preparedStatement.setString(1, customer.getFirstName());
             preparedStatement.setString(2, customer.getLastName());
             preparedStatement.setString(3, customer.getEmail());

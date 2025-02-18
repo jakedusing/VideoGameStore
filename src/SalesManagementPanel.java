@@ -1,3 +1,5 @@
+import com.jd.*;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -27,7 +29,7 @@ public class SalesManagementPanel extends JPanel {
         setLayout(new BorderLayout());
 
         // Table setup
-        /*String[] columnNames = {"Sale ID", "Game", "Quantity", "Total Price", "Date"};
+        /*String[] columnNames = {"com.jd.Sale ID", "Game", "Quantity", "Total Price", "Date"};
         tableModel = new DefaultTableModel(columnNames, 0);
         salesTable = new JTable(tableModel);
         loadSalesData();
@@ -37,12 +39,12 @@ public class SalesManagementPanel extends JPanel {
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new GridLayout(6, 2));
 
-        formPanel.add(new JLabel("Employee:"));
+        formPanel.add(new JLabel("com.jd.Employee:"));
         employeeDropdown = new JComboBox<>();
         loadEmployees();
         formPanel.add(employeeDropdown);
 
-        formPanel.add(new JLabel("Customer:"));
+        formPanel.add(new JLabel("com.jd.Customer:"));
         customerDropdown = new JComboBox<>();
         loadCustomers();
         formPanel.add(customerDropdown);
@@ -61,7 +63,7 @@ public class SalesManagementPanel extends JPanel {
         priceField.setEditable(false);
         formPanel.add(priceField);
 
-        addSaleButton = new JButton("Add Sale");
+        addSaleButton = new JButton("Add com.jd.Sale");
         formPanel.add(addSaleButton);
         add(formPanel, BorderLayout.SOUTH);
 

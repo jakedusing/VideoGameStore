@@ -1,3 +1,5 @@
+package com.jd;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class VideoGameService {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            // set parameters based on the VideoGame object
+            // set parameters based on the com.jd.VideoGame object
             preparedStatement.setString(1, videoGame.getTitle());
             preparedStatement.setString(2, videoGame.getGenre());
             preparedStatement.setString(3, videoGame.getPlatform());

@@ -1,3 +1,5 @@
+package com.jd;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,7 +11,7 @@ public class DatabaseConfig {
 
     public static Properties loadProperties() {
         Properties properties = new Properties();
-        try (FileInputStream input = new FileInputStream("src/db.properties")) {
+        try (FileInputStream input = new FileInputStream("src/main/resources/db.properties")) {
             properties.load(input);
         } catch (IOException e) {
             e.printStackTrace();

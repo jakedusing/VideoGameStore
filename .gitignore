@@ -28,4 +28,15 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-src/db.properties
+# Ignore target directory (Maven build output)
+target/
+
+# Ignore IntelliJ IDEA project files
+*.iml
+.idea/
+
+# Ignore log files
+*.log
+
+# Database config files
+db.properties

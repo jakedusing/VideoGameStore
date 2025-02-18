@@ -1,32 +1,38 @@
-public class Customer {
+package com.jd;
 
-    private int customerId;
+public class Employee {
+
+    private int employeeId;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
+    private String hireDate;
+    private double salary;
     private java.sql.Timestamp createdAt;
 
-    public Customer(int customerId, String firstName, String lastName,
-                    String email, String phoneNumber, java.sql.Timestamp createdAt) {
+    public Employee(int employeeId, String firstName, String lastName, String email,
+                    String phoneNumber, String hireDate, double salary, java.sql.Timestamp createdAt) {
 
-        this.customerId = customerId;
+        this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.hireDate = hireDate;
+        this.salary = salary;
         this.createdAt = createdAt;
     }
 
-    public Customer(String firstName, String lastName, String email, String phoneNumber) {
+    public Employee(String firstName, String lastName, String email,
+                     String phoneNumber, String hireDate, double salary) {
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-    }
-
-    public int getCustomerId() {
-        return customerId;
+        this.hireDate = hireDate;
+        this.salary = salary;
     }
 
     public String getFirstName() {
@@ -45,18 +51,24 @@ public class Customer {
         return phoneNumber;
     }
 
-    public java.sql.Timestamp getCreatedAt() {
-        return createdAt;
+    public String getHireDate() {
+        return hireDate;
+    }
+
+    public double getSalary() {
+        return salary;
     }
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "customerID=" + customerId +
+        return "com.jd.Employee{" +
+                "employeeID=" + employeeId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
+                ", hireDate='" + hireDate + '\'' +
+                ", salary=$'" + salary + '\'' +
                 ", createdAt=" + createdAt +
                 '}';
     }

@@ -1,3 +1,5 @@
+package com.jd;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ public class EmployeeService {
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-            // set parameters based on Employee object
+            // set parameters based on com.jd.Employee object
             preparedStatement.setString(1, employee.getFirstName());
             preparedStatement.setString(2, employee.getLastName());
             preparedStatement.setString(3, employee.getEmail());
@@ -105,7 +107,7 @@ public class EmployeeService {
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Employee information updated successfully!");
+                System.out.println("com.jd.Employee information updated successfully!");
             } else {
                 System.out.println("No employee found with the given ID");
             }
@@ -124,7 +126,7 @@ public class EmployeeService {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            System.out.println("Employee Sales Report:");
+            System.out.println("com.jd.Employee Sales Report:");
             System.out.println("-------------------------------------");
 
             // %-10s -> Left-aligns a string in a field of width 10 (for Emp ID)

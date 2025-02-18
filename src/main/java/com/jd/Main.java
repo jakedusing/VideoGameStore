@@ -1,3 +1,5 @@
+package com.jd;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -30,19 +32,19 @@ public class Main {
 
             //employeeService.getEmployeeSalesReport();
 
-            /*List<Sale> history = customerService.getCustomerPurchaseHistory(1);
-            for (Sale sale : history) {
+            /*List<com.jd.Sale> history = customerService.getCustomerPurchaseHistory(1);
+            for (com.jd.Sale sale : history) {
                 System.out.println(sale);
             }*/
 
-            /*List<Sale> sales = new ArrayList<>();
-            sales.add(new Sale(3, 1, 1, 1));
-            sales.add(new Sale(12, 1, 1, 1));
-            Order order = new Order(sales, 1, 1);
+            /*List<com.jd.Sale> sales = new ArrayList<>();
+            sales.add(new com.jd.Sale(3, 1, 1, 1));
+            sales.add(new com.jd.Sale(12, 1, 1, 1));
+            com.jd.Order order = new com.jd.Order(sales, 1, 1);
             saleService.addSale(order, videoGameService);*/
-           // sales.add(new Sale(13, 1, 3, 1));
-           // sales.add(new Sale(20, 1, 5, 1));
-           // Order order = new Order(sales, 1);
+           // sales.add(new com.jd.Sale(13, 1, 3, 1));
+           // sales.add(new com.jd.Sale(20, 1, 5, 1));
+           // com.jd.Order order = new com.jd.Order(sales, 1);
 
             //saleService.addSale(order, videoGameService);
 
@@ -54,14 +56,14 @@ public class Main {
             if (customerId == -1) {
                 System.out.println("No customer found with that email.");
             } else {
-                List<Sale> sales = saleService.getSalesByCustomer(customerId);
+                List<com.jd.Sale> sales = saleService.getSalesByCustomer(customerId);
 
                 if (sales.isEmpty()) {
                     System.out.println("No sales found for this customer.");
                 } else {
                     System.out.println("Sales for customer with email " + email + ":");
-                    for (Sale sale : sales) {
-                        System.out.println("Sale ID: " + sale.getSaleId() + ", Date: " + sale.getSaleDate() +
+                    for (com.jd.Sale sale : sales) {
+                        System.out.println("com.jd.Sale ID: " + sale.getSaleId() + ", Date: " + sale.getSaleDate() +
                                 ", Amount: " + sale.getTotalPrice() + ", Game bought: " + videoGameService.getGameTitle(sale.getGameId()));
                     }
                 }
@@ -72,24 +74,24 @@ public class Main {
 
 
 
-            /*Sale sale = new Sale(7, 1, 8, 2);   // gameid, employeeid, quantity, customerid
+            /*com.jd.Sale sale = new com.jd.Sale(7, 1, 8, 2);   // gameid, employeeid, quantity, customerid
             saleService.addSale(sale, videoGameService);*/
 
-            /*List<Sale> sales = saleService.getSalesByCustomer(2);
+            /*List<com.jd.Sale> sales = saleService.getSalesByCustomer(2);
             sales.forEach(System.out::println);
             List<String> topGames = saleService.getTopSellingGames(3);
             topGames.forEach(System.out::println);*/
-            /*List<Employee> employees = employeeService.getAllEmployees();
+            /*List<com.jd.Employee> employees = employeeService.getAllEmployees();
             employees.forEach(System.out::println);
 
             employeeService.updateEmployee(1, "Bob", "Seger",
                     null, null, null);
 
-            List<Employee> employees1 = employeeService.getAllEmployees();
+            List<com.jd.Employee> employees1 = employeeService.getAllEmployees();
             employees.forEach(System.out::println);
             employees1.forEach(System.out::println);*/
 
-            /*List<Customer> customers = customerService.getAllCustomers();
+            /*List<com.jd.Customer> customers = customerService.getAllCustomers();
             customers.forEach(System.out::println);
 
             boolean updated = customerService.updateCustomerInfo(
@@ -100,58 +102,58 @@ public class Main {
                     null
             );
             if (updated) {
-                System.out.println("Customer info updated successfully!");
+                System.out.println("com.jd.Customer info updated successfully!");
             } else {
                 System.out.println("No updates were made, check the customer ID");
             }
 
             System.out.println(customers.get(0));
-            List<Customer> customers1 = customerService.getAllCustomers();
+            List<com.jd.Customer> customers1 = customerService.getAllCustomers();
             System.out.println(customers1.get(0));*/
 
-            /*List<VideoGame> games = new ArrayList<>(List.of(
-                    new VideoGame("Final Fantasy XVI", "RPG", "PS5", 69.99, 12,
+            /*List<com.jd.VideoGame> games = new ArrayList<>(List.of(
+                    new com.jd.VideoGame("Final Fantasy XVI", "RPG", "PS5", 69.99, 12,
                             "2022-09-09", "Square Enix", "Square Enix"),
-                    new VideoGame("Red Dead Redemption 2", "Action-Adventure", "Xbox One", 39.99, 14,
+                    new com.jd.VideoGame("Red Dead Redemption 2", "Action-Adventure", "Xbox One", 39.99, 14,
                             "2018-10-26", "Rockstar Games", "Rockstar Games"),
-                    new VideoGame("Resident Evil Village", "Action-Adventure", "PS5", 59.99, 9,
+                    new com.jd.VideoGame("Resident Evil Village", "Action-Adventure", "PS5", 59.99, 9,
                             "2021-05-05", "Capcom", "Capcom"),
-                    new VideoGame("Mortal Kombat 11", "Fighting", "Xbox Series X", 49.99, 6,
+                    new com.jd.VideoGame("Mortal Kombat 11", "Fighting", "Xbox Series X", 49.99, 6,
                             "2019-04-23", "NetherRealm Studios", "Warner Bros. Interactive Entertainment"),
-                    new VideoGame("Hollow Knight", "Action-Adventure", "PS4", 14.99, 20,
+                    new com.jd.VideoGame("Hollow Knight", "Action-Adventure", "PS4", 14.99, 20,
                             "2017-02-24", "Team Cherry", "Team Cherry")
             ));
 
-            for (VideoGame game : games) {
+            for (com.jd.VideoGame game : games) {
                 videoGameService.addVideoGame(game);
             }*/
 
-            /*List<Customer> customers = new ArrayList<>(List.of(
-                    new Customer("Chris", "Evans", "chrisevans@marvel.com", "555-123-4567"),
-                    new Customer("Emma", "Stone", "emmastone@hollywood.com", "555-234-5678"),
-                    new Customer("LeBron", "James", "lebronjames@nba.com", "555-345-7890"),
-                    new Customer("Zendaya", "Coleman", "zendaya@hollywood.com", "555-567-8901"),
-                    new Customer("Ryan", "Reynolds", "ryanreynolds@deadpool.com", "555-678-9012"),
-                    new Customer("Simone", "Biles", "simonebiles@gymnastics.com", "555-789-0123"),
-                    new Customer("Tom", "Holland", "tomholland@spiderman.com", "555-890-1234"),
-                    new Customer("Adele", "Laurie", "adelelaurie@music.com", "555-901-2345"),
-                    new Customer("Serena", "Williams", "serenawilliams@tennis.com", "555-012-3456"),
-                    new Customer("Olivia", "Rodrigo", "oliviar@music.com", "555-831-3389")));
+            /*List<com.jd.Customer> customers = new ArrayList<>(List.of(
+                    new com.jd.Customer("Chris", "Evans", "chrisevans@marvel.com", "555-123-4567"),
+                    new com.jd.Customer("Emma", "Stone", "emmastone@hollywood.com", "555-234-5678"),
+                    new com.jd.Customer("LeBron", "James", "lebronjames@nba.com", "555-345-7890"),
+                    new com.jd.Customer("Zendaya", "Coleman", "zendaya@hollywood.com", "555-567-8901"),
+                    new com.jd.Customer("Ryan", "Reynolds", "ryanreynolds@deadpool.com", "555-678-9012"),
+                    new com.jd.Customer("Simone", "Biles", "simonebiles@gymnastics.com", "555-789-0123"),
+                    new com.jd.Customer("Tom", "Holland", "tomholland@spiderman.com", "555-890-1234"),
+                    new com.jd.Customer("Adele", "Laurie", "adelelaurie@music.com", "555-901-2345"),
+                    new com.jd.Customer("Serena", "Williams", "serenawilliams@tennis.com", "555-012-3456"),
+                    new com.jd.Customer("Olivia", "Rodrigo", "oliviar@music.com", "555-831-3389")));
 
-            for (Customer customer : customers) {
+            for (com.jd.Customer customer : customers) {
                 customerService.addCustomer(customer);
             }*/
 
             // customerService.getAllCustomers().forEach(System.out::println);
             // videoGameService.getAllGames().forEach(System.out::println);
 
-            /*Customer newCustomer = new Customer("Taylor", "Swift", "tswift@gmail.com", "111-234-5678");
+            /*com.jd.Customer newCustomer = new com.jd.Customer("Taylor", "Swift", "tswift@gmail.com", "111-234-5678");
             customerService.addCustomer(newCustomer);*/
 
-            /*Employee newEmployee = new Employee("Joe", "Dirt", "joedirt@gmail.com",
+            /*com.jd.Employee newEmployee = new com.jd.Employee("Joe", "Dirt", "joedirt@gmail.com",
                 "312-777-8888", "2022-05-15", 21.00);
 
-            EmployeeService employeeService = new EmployeeService();
+            com.jd.EmployeeService employeeService = new com.jd.EmployeeService();
             employeeService.addEmployee(newEmployee);*/
 
 
@@ -163,7 +165,7 @@ public class Main {
             String employeeEmail = scanner.nextLine();
             int employeeId = employeeService.getEmployeeId(employeeEmail);
             if (employeeId == -1) {
-                System.out.println("Employee not found. Exiting.");
+                System.out.println("com.jd.Employee not found. Exiting.");
                 return;
             }
 
@@ -193,17 +195,17 @@ public class Main {
 
             videoGameService.updateGameStock(gameId, stock - quantity);
 
-            // Create a Sale object and add to the database
-            Sale sale = new Sale(gameId, employeeId, quantity, totalPrice);
+            // Create a com.jd.Sale object and add to the database
+            com.jd.Sale sale = new com.jd.Sale(gameId, employeeId, quantity, totalPrice);
             saleService.addSale(sale);
 
-            System.out.println("Sale completed successfully!");*/
+            System.out.println("com.jd.Sale completed successfully!");*/
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-       /* try (Connection connection = DatabaseConfig.getConnection()) {
-            System.out.println("Connected to the database from Main!");
+       /* try (Connection connection = resources.DatabaseConfig.getConnection()) {
+            System.out.println("Connected to the database from com.jd.Main!");
             Statement statement = connection.createStatement();
 
             String query = "SELECT * FROM games";

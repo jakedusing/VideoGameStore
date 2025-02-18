@@ -1,3 +1,8 @@
+import com.jd.CustomerService;
+import com.jd.EmployeeService;
+import com.jd.SaleService;
+import com.jd.VideoGameService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
@@ -31,8 +36,8 @@ public class GameStoreGUI  extends JFrame  {
         loadGamesButton.addActionListener(e -> {
             tableModel.setRowCount(0); // Clear table
             try {
-                List<VideoGame> games = videoGameService.getAllGames();
-                for (VideoGame game : games) {
+                List<com.jd.VideoGame> games = videoGameService.getAllGames();
+                for (com.jd.VideoGame game : games) {
                     tableModel.addRow(new Object[]{
                             game.getGameId(), game.getTitle(), game.getGenre(),
                             game.getPlatform(), game.getPrice(), game.getStock()

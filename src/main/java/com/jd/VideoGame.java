@@ -1,3 +1,5 @@
+package com.jd;
+
 public class VideoGame {
 
     private int gameId;
@@ -77,7 +79,7 @@ public class VideoGame {
 
     @Override
     public String toString() {
-        return "VideoGame{" +
+        return "com.jd.VideoGame{" +
                 "gameID=" + gameId +
                 ", title='" + title + '\'' +
                 ", genre='" + genre + '\'' +
