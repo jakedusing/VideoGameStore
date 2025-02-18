@@ -28,7 +28,7 @@ public class VideoGameController {
 
     // Get a specific video game by id
     @GetMapping("/{id}")
-    public Optional<VideoGame> getVideoGameById(@PathVariable Long id) {
+    public Optional<VideoGame> getVideoGameById(@PathVariable int id) {
         return videoGameRepository.findById(id);
     }
 }
