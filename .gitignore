@@ -40,3 +40,5 @@ target/
 
 # Database config files
 db.properties
+
+src/main/resources/application.properties
