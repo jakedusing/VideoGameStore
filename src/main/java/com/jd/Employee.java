@@ -9,10 +9,11 @@ public class Employee {
     private String phoneNumber;
     private String hireDate;
     private double salary;
+    private String password;
     private java.sql.Timestamp createdAt;
 
     public Employee(int employeeId, String firstName, String lastName, String email,
-                    String phoneNumber, String hireDate, double salary, java.sql.Timestamp createdAt) {
+                    String phoneNumber, String hireDate, double salary, String password, java.sql.Timestamp createdAt) {
 
         this.employeeId = employeeId;
         this.firstName = firstName;
@@ -21,6 +22,7 @@ public class Employee {
         this.phoneNumber = phoneNumber;
         this.hireDate = hireDate;
         this.salary = salary;
+        this.password = password;
         this.createdAt = createdAt;
     }
 

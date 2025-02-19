@@ -1,7 +1,6 @@
 package com.jd.model;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "employee")
@@ -24,10 +23,13 @@ public class Employee {
     private String phoneNumber;
 
     @Column(name = "hire_date")
-    private Date hireDate;
+    private String hireDate;
 
     @Column(name = "salary")
     private double salary;
+
+    @Column(name = "password")
+    private String password;
 
     // Getters and Setters
     public int getId() {
@@ -70,11 +72,11 @@ public class Employee {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getHireDate() {
+    public String getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(Date hireDate) {
+    public void setHireDate(String hireDate) {
         this.hireDate = hireDate;
     }
 
@@ -84,5 +86,13 @@ public class Employee {
 
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

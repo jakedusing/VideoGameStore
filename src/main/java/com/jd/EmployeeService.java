@@ -51,6 +51,7 @@ public class EmployeeService {
                         resultSet.getString("phone_number"),
                         resultSet.getString("hire_date"),
                         resultSet.getDouble("salary"),
+                        resultSet.getString("password"),
                         resultSet.getTimestamp("created_at")
                 ));
             }
