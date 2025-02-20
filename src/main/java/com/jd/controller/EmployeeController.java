@@ -2,6 +2,7 @@ package com.jd.controller;
 
 import com.jd.model.Employee;
 import com.jd.repository.EmployeeRepository;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -32,6 +31,44 @@ public class EmployeeController {
         List<Employee> employees = employeeRepository.findAll();
         System.out.println("Fetched employees: " + employees);
         return employees;
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getCurrentEmployee(@RequestHeader("Authorization") String token) {
+        try {
+            // Remove "Bearer" prefix from token
+            String jwt = token.replace("Bearer ", "");
+
+            // Parse token to get email
+            Claims claims = Jwts.parser()
+                    .setSigningKey(jwtSecret)
+                    .parseClaimsJws(jwt)
+                    .getBody();
+
+            String email = claims.getSubject();
+
+            // Find employee by email
+            Optional<Employee> employeeOptional = employeeRepository.findByEmail(email);
+            if (employeeOptional.isPresent()) {
+                Employee employee = employeeOptional.get();
+
+                // Create a response without exposing the password
+                Map<String, Object> employeeData = new HashMap<>();
+                employeeData.put("id", employee.getId());
+                employeeData.put("firstName", employee.getFirstName());
+                employeeData.put("lastName", employee.getLastName());
+                employeeData.put("email", employee.getEmail());
+                employeeData.put("phoneNumber", employee.getPhoneNumber());
+                employeeData.put("hireDate", employee.getHireDate());
+                employeeData.put("salary", employee.getSalary());
+
+                return ResponseEntity.ok(employeeData);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+        }
     }
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
