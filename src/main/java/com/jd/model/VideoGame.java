@@ -22,6 +22,9 @@ public class VideoGame {
     @Column(name = "price")
     private Double price;
 
+    @Column(name = "stock")
+    private int stock;
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -61,5 +64,13 @@ public class VideoGame {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 }
