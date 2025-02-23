@@ -31,6 +31,13 @@ public class CustomerController {
         return customerRepository.findById(id);
     }
 
+    // get a customer by firstName
+    @GetMapping("/search")
+    public ResponseEntity<List<Customer>> searchCustomerByFirstName(@RequestParam String firstName) {
+        List<Customer> customers = customerRepository.findByFirstNameContainingIgnoreCase(firstName);
+        return ResponseEntity.ok(customers);
+    }
+
     // create a new customer
     @PostMapping
     public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
