@@ -42,11 +42,7 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
         try {
-            System.out.println("Received customer: " + customer);
-            System.out.println("First Name: " + customer.getFirstName());
-            System.out.println("Last Name: " + customer.getLastName());
-            System.out.println("Email: " + customer.getEmail());
-            System.out.println("Phone: " + customer.getPhoneNumber());
+            System.out.println("Creating customer: " + customer.getFirstName() + " " + customer.getLastName());
 
             Customer savedCustomer = customerRepository.save(customer);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedCustomer);
@@ -54,6 +50,29 @@ public class CustomerController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Error saving customer: " + e.getMessage());
+        }
+    }
+
+    // Update an existing customer
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCustomer(@PathVariable int id, @RequestBody Customer updatedCustomer) {
+        Optional<Customer> existingCustomerOpt = customerRepository.findById(id);
+
+        if (existingCustomerOpt.isPresent()) {
+            Customer existingCustomer = existingCustomerOpt.get();
+
+            // update fields
+            existingCustomer.setFirstName(updatedCustomer.getFirstName());
+            existingCustomer.setLastName(updatedCustomer.getLastName());
+            existingCustomer.setEmail(updatedCustomer.getEmail());
+            existingCustomer.setPhoneNumber(updatedCustomer.getPhoneNumber());
+
+            // save changes
+            customerRepository.save(existingCustomer);
+
+            return ResponseEntity.ok(existingCustomer);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
         }
     }
 }
