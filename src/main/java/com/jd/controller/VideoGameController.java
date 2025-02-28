@@ -22,7 +22,7 @@ public class VideoGameController {
     @GetMapping
     public List<VideoGame> getAllVideoGames() {
         List<VideoGame> videoGames = videoGameRepository.findAll();
-        System.out.println("Fetched games: " + videoGames);
+      //  System.out.println("Fetched games: " + videoGames);
         return videoGames;
     }
 
@@ -33,7 +33,7 @@ public class VideoGameController {
     }
 
     // Update game price or stock
-    @PutMapping("/api/videogames/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateVideoGame(@PathVariable int id, @RequestBody Map<String, Object> updates) {
         Optional<VideoGame> optionalGame = videoGameRepository.findById(id);
         if (optionalGame.isPresent()) {
