@@ -4,6 +4,7 @@ import com.jd.model.Sale;
 import com.jd.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,14 @@ public class SaleController {
     public List<Sale> getAllSales() {
         List<Sale> sales = saleRepository.findAll();
         System.out.println("Fetched sales: " + sales);
+        return sales;
+    }
+
+    // get sales by customer_id
+    @GetMapping("/customer/{customerId}")
+    public List<Sale> getSalesByCustomerId(@PathVariable int customerId) {
+        List<Sale> sales = saleRepository.findByCustomerId(customerId);
+        System.out.println("Fetched sales for customer ID " + customerId + ": " + sales);
         return sales;
     }
 }
