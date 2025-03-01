@@ -1,5 +1,6 @@
 package com.jd.controller;
 
+import com.jd.dto.SaleOrderHistoryDTO;
 import com.jd.model.Sale;
 import com.jd.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,7 @@ public class SaleController {
 
     // get sales by customer_id
     @GetMapping("/customer/{customerId}")
-    public List<Sale> getSalesByCustomerId(@PathVariable int customerId) {
-        List<Sale> sales = saleRepository.findByCustomerId(customerId);
-        System.out.println("Fetched sales for customer ID " + customerId + ": " + sales);
-        return sales;
+    public List<SaleOrderHistoryDTO> getSalesHistory(@PathVariable int customerId) {
+        return saleRepository.getSalesHistoryByCustomerId(customerId);
     }
 }
