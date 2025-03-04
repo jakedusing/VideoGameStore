@@ -32,10 +32,16 @@ public class CustomerController {
     }
 
     // get a customer by firstName
-    @GetMapping("/search")
+    @GetMapping("/{fistName}")
     public ResponseEntity<List<Customer>> searchCustomerByFirstName(@RequestParam String firstName) {
         List<Customer> customers = customerRepository.findByFirstNameContainingIgnoreCase(firstName);
         return ResponseEntity.ok(customers);
+    }
+
+    @GetMapping("/search")
+    public List<Customer> searchCustomerByPhone(@RequestParam String phoneNumber) {
+        System.out.println("Searching for phone number: " + phoneNumber);
+        return customerRepository.findByPhoneNumber(phoneNumber);
     }
 
     // create a new customer
