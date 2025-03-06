@@ -3,11 +3,9 @@ package com.jd.controller;
 import com.jd.dto.SaleOrderHistoryDTO;
 import com.jd.model.Sale;
 import com.jd.repository.SaleRepository;
+import com.jd.repository.VideoGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +15,10 @@ public class SaleController {
 
     @Autowired
     private SaleRepository saleRepository;
+
+    @Autowired
+    private VideoGameRepository videoGameRepository;
+
 
     // Get all sales
     @GetMapping
@@ -31,4 +33,6 @@ public class SaleController {
     public List<SaleOrderHistoryDTO> getSalesHistory(@PathVariable int customerId) {
         return saleRepository.getSalesHistoryByCustomerId(customerId);
     }
+
+    
 }
