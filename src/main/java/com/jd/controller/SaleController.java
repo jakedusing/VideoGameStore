@@ -62,13 +62,25 @@ public class SaleController {
             VideoGame game = videoGameRepository.findById(item.getGameId())
                     .orElseThrow(() -> new RuntimeException("Game not found"));
 
+            // Check if there is enough stock
+            if (game.getStock() < item.getQuantity()) {
+                throw new RuntimeException("Not enough stock for game: " + game.getTitle());
+            }
+
             Sale sale = new Sale();
             sale.setOrderId(order.getOrderId());
             sale.setGameId(game.getId());
             sale.setQuantity(item.getQuantity());
             sale.setPrice(game.getPrice());
 
+            // Save sale to the database
             saleRepository.save(sale);
+
+            // Deduct stock from the game
+            game.setStock(game.getStock() - item.getQuantity());
+            videoGameRepository.save(game);
+
+            // Update total price
             totalPrice += game.getPrice() * item.getQuantity();
         }
 
