@@ -66,8 +66,10 @@ public class EmployeeController {
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Employee not found");
             }
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token expired");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
         }
     }
 
