@@ -25,6 +25,12 @@ public class VideoGame {
     @Column(name = "stock")
     private int stock;
 
+    @Column(name = "developer")
+    private String developer;
+
+    @Column(name = "publisher")
+    private String publisher;
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -72,5 +78,21 @@ public class VideoGame {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public String getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(String developer) {
+        this.developer = developer;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 }

@@ -47,4 +47,21 @@ public class VideoGameController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Video game not found");
     }
+
+    // Add a new video game
+    @PostMapping("/add")
+    public ResponseEntity<?> addVideoGame(@RequestBody VideoGame videoGame) {
+        Optional<VideoGame> existingGame = videoGameRepository.findByTitle(videoGame.getTitle());
+
+        if (existingGame.isPresent()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Game already exists!");
+        }
+
+        try {
+            VideoGame newGame = videoGameRepository.save(videoGame);
+            return ResponseEntity.ok(newGame);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+        }
+    }
 }
