@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()  // Disable CSRF for testing (enable in production)
                 .authorizeRequests()
-                .antMatchers("/api/employees/**", "/api/customers/**", "/api/videogames/**", "/api/sales/**").permitAll() // Allow all requests
+                .antMatchers("/api/employees/**", "/api/customers/**", "/api/videogames/**", "/api/sales/**", "/api/reports/**").permitAll() // Allow all requests
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable(); // Disable default login form
